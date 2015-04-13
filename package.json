@@ -1,0 +1,30 @@
+{
+  "name": "typed-bacon",
+  "version": "0.0.1",
+  "description": "Type checks in your Bacon stream!",
+  "main": "typed-bacon.js",
+  "scripts": {
+    "build": "coffee -c ./typed-bacon.coffee",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johannhof/typed-bacon.git"
+  },
+  "keywords": [
+    "bacon",
+    "baconjs",
+    "typing",
+    "types",
+    "stream"
+  ],
+  "author": "Johann Hofmann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/johannhof/typed-bacon/issues"
+  },
+  "homepage": "https://github.com/johannhof/typed-bacon",
+  "devDependencies": {
+    "coffee-script": "^1.9.1"
+  }
+}
