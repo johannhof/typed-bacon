@@ -14,6 +14,11 @@ init = (Bacon) ->
       throw new Error("Expected #{val} to be of type #{type.description}.")
     res = map.withDescription(@, "typeCheck", types)
 
+  class Array
+    @description: "array"
+    @isType: (val) ->
+      Object.prototype.toString.call(val) is "[object Array]"
+
   Types:
     Existy:
       description: "existy"
@@ -30,10 +35,7 @@ init = (Bacon) ->
     String:
       description: "string"
       isType: (val) -> typeof val is 'string'
-    Array:
-      description: "array"
-      isType: (val) ->
-        Object.prototype.toString.call(val) is "[object Array]"
+    Array: Array
     Object:
       description: "object"
       isType: (val) ->

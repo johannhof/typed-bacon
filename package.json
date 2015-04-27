@@ -2,10 +2,10 @@
   "name": "typed-bacon",
   "version": "0.0.1",
   "description": "Type checks in your Bacon stream!",
-  "main": "typed-bacon.js",
+  "main": "dist/typed-bacon.js",
   "scripts": {
-    "build": "coffee -c ./typed-bacon.coffee",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "coffee -c -o dist/ typed-bacon.coffee",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,17 @@
   },
   "homepage": "https://github.com/johannhof/typed-bacon",
   "devDependencies": {
-    "coffee-script": "^1.9.1"
+    "baconjs": "^0.7.53",
+    "coffee-script": "^1.9.1",
+    "jest-cli": "^0.4.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "preprocessor.js",
+    "testFileExtensions": [
+      "coffee",
+      "litcoffee",
+      "coffee.md",
+      "js"
+    ]
   }
 }
