@@ -14,10 +14,32 @@ init = (Bacon) ->
       throw new Error("Expected #{val} to be of type #{type.description}.")
     res = map.withDescription(@, "typeCheck", types)
 
-  class Array
+  class _Array
     @description: "array"
     @isType: (val) ->
       Object.prototype.toString.call(val) is "[object Array]"
+
+    isType: (val) ->
+      return false if not _Array.isType(val)
+      return false if @options.length? and val.length isnt @options.length
+      true
+
+    constructor: (options={}) ->
+      if not (@ instanceof _Array) then return new _Array(options)
+      @options = options
+
+  class _Object
+    @description: "object"
+    @isType: (val) ->
+      Object.prototype.toString.call(val) is "[object Object]"
+
+    isType: (val) ->
+      return false if not _Object.isType(val)
+      true
+
+    constructor: (options={}) ->
+      if not (@ instanceof _Object) then return new _Object(options)
+      @options = options
 
   Types:
     Existy:
@@ -35,11 +57,8 @@ init = (Bacon) ->
     String:
       description: "string"
       isType: (val) -> typeof val is 'string'
-    Array: Array
-    Object:
-      description: "object"
-      isType: (val) ->
-        Object.prototype.toString.call(val) is "[object Object]"
+    Array: _Array
+    Object: _Object
     Function:
       description: "function"
       isType: (val) ->
