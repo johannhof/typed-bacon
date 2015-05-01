@@ -35,6 +35,8 @@ describe 'Types', ->
       expect(Types.Array.isType([])).toBe(true)
       expect(Types.Array.isType(['a'])).toBe(true)
       expect(Types.Array().isType([])).toBe(true)
+
+    it 'compares the length', ->
       expect(Types.Array(length: 10).isType([])).toBe(false)
       expect(Types.Array(length: 10).isType([1,2,3,4,5,6,7,8,9,10])).toBe(true)
 
@@ -42,4 +44,11 @@ describe 'Types', ->
     it 'finds if an object is an object', ->
       expect(Types.Object.isType([])).toBe(false)
       expect(Types.Object.isType({})).toBe(true)
+
+    it 'does deep comparisons', ->
+      expect(Types.Object({test: Types.String}).isType({test: "abc"})).toBe(true)
+      expect(Types.Object({wat: {test: Types.Number}}).isType({wat: {test: 1}})).toBe(true)
+
+      expect(Types.Object({test: Types.String}).isType({test: 1})).toBe(false)
+      expect(Types.Object({test: Types.String}).isType({})).toBe(false)
 

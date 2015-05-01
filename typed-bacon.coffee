@@ -28,6 +28,16 @@ init = (Bacon) ->
       if not (@ instanceof _Array) then return new _Array(options)
       @options = options
 
+  deepIsType = (proto, comp) ->
+    for own key, val of proto
+      if val.isType # TODO find a better way to find if Type object?
+        return false if not val.isType(comp[key])
+      else if typeof val is "object"
+        return false if not deepIsType(val, comp[key])
+      else
+        return false
+    true
+
   class _Object
     @description: "object"
     @isType: (val) ->
@@ -35,11 +45,11 @@ init = (Bacon) ->
 
     isType: (val) ->
       return false if not _Object.isType(val)
-      true
+      return deepIsType(@proto, val)
 
-    constructor: (options={}) ->
-      if not (@ instanceof _Object) then return new _Object(options)
-      @options = options
+    constructor: (proto={}) ->
+      if not (@ instanceof _Object) then return new _Object(proto)
+      @proto = proto
 
   Types:
     Existy:
