@@ -5,6 +5,7 @@
   "main": "dist/typed-bacon.js",
   "scripts": {
     "build": "coffee -c -o dist/ typed-bacon.coffee",
+    "docs": "coffee -c -o tests/ README.coffee.md",
     "test": "jest"
   },
   "repository": {
@@ -30,6 +31,8 @@
     "jest-cli": "^0.4.0"
   },
   "jest": {
+    "testDirectoryName": "tests",
+    "setupEnvScriptFile": "setup.js",
     "scriptPreprocessor": "preprocessor.js",
     "testFileExtensions": [
       "coffee",
