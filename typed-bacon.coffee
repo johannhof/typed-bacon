@@ -7,11 +7,11 @@ init = (Bacon) ->
     res = filter.withDescription(@, "typeFilter", types)
 
   Bacon.Observable :: typeCheck = (types...) ->
-    map = @map (val) ->
+    map = @flatMap (val) ->
       for type in types
         if type.isType(val)
           return val
-      throw new Error("Expected #{val} to be of type #{type.description}.")
+      return new Bacon.Error("Expected #{val} to be of type #{type.description}.")
     res = map.withDescription(@, "typeCheck", types)
 
   class _Array
