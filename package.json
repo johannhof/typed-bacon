@@ -27,7 +27,7 @@
   "devDependencies": {
     "baconjs": "^0.7.53",
     "coffee-script": "^1.9.1",
-    "jest-cli": "^0.4.0"
+    "jest-cli": "git://github.com/johannhof/jest.git#d1349cc75e69b9f28c6a3af5ce41838238c8a8a3"
   },
   "jest": {
     "testDirectoryName": "tests",
