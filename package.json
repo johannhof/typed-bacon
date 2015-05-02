@@ -5,8 +5,7 @@
   "main": "dist/typed-bacon.js",
   "scripts": {
     "build": "coffee -c -o dist/ typed-bacon.coffee",
-    "docs": "coffee -c -o tests/ README.coffee.md",
-    "test": "jest"
+    "test": "coffee -c -o tests/ README.litcoffee && jest"
   },
   "repository": {
     "type": "git",

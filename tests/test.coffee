@@ -1,9 +1,3 @@
-jest.dontMock '../typed-bacon.coffee'
-jest.dontMock 'baconjs'
-
-Bacon = require 'baconjs'
-{Types} = require '../typed-bacon.coffee'
-
 describe 'Types', ->
   describe 'existy', ->
     it 'finds if an object is existy', ->
