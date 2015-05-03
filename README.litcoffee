@@ -15,10 +15,33 @@ You will also want to require typed-bacon to get access to the Types object.
 
     {Types} = require('./typed-bacon.coffee')
 
-## Example
+## Docs
 
-    Bacon.fromArray([1,2,"3"])
+### Observable.typeCheck
+
+Transforms a value to an error if the input is not of the specified type.
+
+    Bacon.fromArray([1, 2, "3"])
          .typeCheck(Types.Number)
          .onError (e) ->
-           assert.equal(e, "Expected 3 to be of type number.")
+           assert(e instanceof Error)
+           assert.equal(e.message, "Expected 3 to be of type number.")
+
+### Observable.typeFilter
+
+Filters out all stream values that are not of the specified type.
+
+    Bacon.fromArray([1, "2", 3, true, 4])
+         .typeFilter(Types.Number)
+         .slidingWindow(3,3)
+         .onValue (arr) ->
+           assert.deepEqual(arr, [1, 3, 4])
+
+### Observable.typeWarn
+
+### Types
+
+#### Object
+
+#### Array
 

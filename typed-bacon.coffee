@@ -11,7 +11,7 @@ init = (Bacon) ->
       for type in types
         if type.isType(val)
           return val
-      return new Bacon.Error("Expected #{val} to be of type #{type.description}.")
+      return new Bacon.Error(new Error("Expected #{val} to be of type #{type.description}."))
     res = map.withDescription(@, "typeCheck", types)
 
   class _Array
