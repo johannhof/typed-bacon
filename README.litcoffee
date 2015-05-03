@@ -11,11 +11,12 @@ Requiring Bacon before typed-bacon ensures that the custom methods can hook into
 
     Bacon = require('baconjs')
 
-You will also want to require typed-bacon to get access to the Types object.
+You need to require `typed-bacon` to add the custom type methods to Bacon observables.
+You will also want to get access to the Types object.
 
-    {Types} = require('./typed-bacon.coffee')
+    {Types} = require('typed-bacon')
 
-## Docs
+## API
 
 ### Observable.typeCheck
 
@@ -39,9 +40,7 @@ Filters out all stream values that are not of the specified type.
 
 ### Observable.typeWarn
 
-### Types
+### Types.Object
 
-#### Object
-
-#### Array
+### Types.Array
 
