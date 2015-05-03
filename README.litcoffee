@@ -1,19 +1,17 @@
 # typed-bacon [![](https://travis-ci.org/johannhof/typed-bacon.svg)](https://travis-ci.org/johannhof/typed-bacon)
 Type checks in your Bacon stream!
 
-_This document is a source file that can be run and contains tests to stay up to date._
+> This document is an executable source file that contains tests to stay up to date.
 
     assert = require('assert')
 
 ## Usage
 
 Requiring Bacon before typed-bacon ensures that the custom methods can hook into Bacon correctly.
-
-    Bacon = require('baconjs')
-
 You need to require `typed-bacon` to add the custom type methods to Bacon observables.
 You will also want to get access to the Types object.
 
+    Bacon = require('baconjs')
     {Types} = require('typed-bacon')
 
 ## API
@@ -22,23 +20,37 @@ You will also want to get access to the Types object.
 
 Transforms a value to an error if the input is not of the specified type.
 
-    Bacon.fromArray([1, 2, "3"])
+    Bacon.fromArray([1, 2, "three"])
          .typeCheck(Types.Number)
          .onError (e) ->
            assert(e instanceof Error)
-           assert.equal(e.message, "Expected 3 to be of type number.")
+           assert.equal(e.message, "Expected three to be of type number.")
 
 ### Observable.typeFilter
 
 Filters out all stream values that are not of the specified type.
 
-    Bacon.fromArray([1, "2", 3, true, 4])
+    Bacon.fromArray([1, "two", 3, true, 4])
          .typeFilter(Types.Number)
          .slidingWindow(3,3)
          .onValue (arr) ->
            assert.deepEqual(arr, [1, 3, 4])
 
 ### Observable.typeWarn
+
+Coming soon!
+
+### Multiple types
+
+In some (hopefully rare) cases you might be forced to have different stream value types in your streams.
+A common use case is allowing a stream to contain `null` if it currently doesn't have a value.
+This can be supported by passing multiple parameters to the Observable methods.
+
+    Bacon.fromArray([1, "two", 3, null, 4])
+         .typeFilter(Types.Number, Types.Null)
+         .slidingWindow(4,4)
+         .onValue (arr) ->
+           assert.deepEqual(arr, [1, 3, null, 4])
 
 ### Types.Object
 
