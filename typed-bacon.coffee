@@ -1,18 +1,15 @@
 
 init = (Bacon) ->
-  Bacon.Observable :: typeFilter = (types...) ->
-    filter = @filter (val) ->
-      for type in types
-        return true if type.isType(val)
-    res = filter.withDescription(@, "typeFilter", types)
+  Bacon.Observable :: typeFilter = (type) ->
+    filter = @filter (val) -> type.isType(val)
+    res = filter.withDescription(@, "typeFilter", type)
 
-  Bacon.Observable :: typeCheck = (types...) ->
+  Bacon.Observable :: typeCheck = (type) ->
     map = @flatMap (val) ->
-      for type in types
-        if type.isType(val)
-          return val
+      if type.isType(val)
+        return val
       return new Bacon.Error(new Error("Expected #{val} to be of type #{type.description}."))
-    res = map.withDescription(@, "typeCheck", types)
+    res = map.withDescription(@, "typeCheck", type)
 
   class _Array
     @description: "array"
@@ -73,7 +70,6 @@ init = (Bacon) ->
       description: "function"
       isType: (val) ->
         typeof val is 'function'
-
 
 if module? && module.exports?
   Bacon = require("baconjs")

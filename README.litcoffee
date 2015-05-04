@@ -40,19 +40,22 @@ Filters out all stream values that are not of the specified type.
 
 Coming soon!
 
-### Multiple types
-
-In some (hopefully rare) cases you might be forced to have different stream value types in your streams.
-A common use case is allowing a stream to contain `null` if it currently doesn't have a value.
-This can be supported by passing multiple parameters to the Observable methods.
-
-    Bacon.fromArray([1, "two", 3, null, 4])
-         .typeFilter(Types.Number, Types.Null)
-         .slidingWindow(4,4)
-         .onValue (arr) ->
-           assert.deepEqual(arr, [1, 3, null, 4])
-
 ### Types.Object
+
+Types.Object can be passed a JS object containing child types with infinite deepness(as long as the call stack holds).
+
+    person = {
+      name: "Johann",
+      languages: 5
+    }
+
+    Bacon.once(person)
+         .typeCheck(Types.Object({
+           name: Types.String,
+           languages: Types.Array
+         }))
+         .onError (e) ->
+           assert(e instanceof Error)
 
 ### Types.Array
 
