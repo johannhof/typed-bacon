@@ -59,3 +59,10 @@ Types.Object can be passed a JS object containing child types with infinite deep
 
 ### Types.Array
 
+Types.Array can receive an object with a length parameter, specifying the exact length of the array.
+
+    Bacon.once([1,2,3,4])
+         .typeCheck(Types.Array(length: 5))
+         .onError (e) ->
+           assert(e instanceof Error)
+
