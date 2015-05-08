@@ -11,18 +11,31 @@ init = (Bacon) ->
       return new Bacon.Error(new Error("Expected #{val} to be of type #{type.description}."))
     res = map.withDescription(@, "typeCheck", type)
 
-  class _Array
+  class Type
+    constructor: ->
+      @alternatives = []
+    or: (type) ->
+      @alternatives.push(type)
+      @
+    isType: (val) ->
+      for type in @alternatives
+        return true if type.isType(val)
+      false
+
+  class _Array extends Type
     @description: "array"
     @isType: (val) ->
       Object.prototype.toString.call(val) is "[object Array]"
 
     isType: (val) ->
+      return true if super(val)
       return false if not _Array.isType(val)
       return false if @options.length? and val.length isnt @options.length
       true
 
     constructor: (options={}) ->
       if not (@ instanceof _Array) then return new _Array(options)
+      super()
       @options = options
 
   deepIsType = (proto, comp) ->
@@ -35,41 +48,73 @@ init = (Bacon) ->
         return false
     true
 
-  class _Object
+  class _Object extends Type
     @description: "object"
     @isType: (val) ->
       Object.prototype.toString.call(val) is "[object Object]"
 
     isType: (val) ->
+      return true if super(val)
       return false if not _Object.isType(val)
-      return deepIsType(@proto, val)
+      deepIsType(@proto, val)
 
     constructor: (proto={}) ->
       if not (@ instanceof _Object) then return new _Object(proto)
+      super()
       @proto = proto
 
   Types:
     Existy:
-      description: "existy"
-      isType: (val) -> val?
+      class Existy extends Type
+        @description: "existy"
+        @isType: (val) -> val?
+        constructor: ->
+          if not (@ instanceof Existy) then return new Existy()
+          super()
+
     Null:
-      description: "null"
-      isType: (val) -> val is null
+      class Null extends Type
+        @description: "null"
+        @isType: (val) -> val is null
+        constructor: ->
+          if not (@ instanceof Null) then return new Null()
+          super()
+
     Boolean:
-      description: "boolean"
-      isType: (val) -> typeof val is 'boolean'
+      class _Boolean extends Type
+        @description: "boolean"
+        @isType: (val) -> typeof val is 'boolean'
+        constructor: ->
+          if not (@ instanceof _Boolean) then return new _Boolean()
+          super()
+
     Number:
-      description: "number"
-      isType: (val) -> typeof val is 'number'
+      class _Number extends Type
+        @description: "number"
+        @isType: (val) -> typeof val is 'number'
+        constructor: ->
+          if not (@ instanceof _Number) then return new _Number()
+          super()
+
     String:
-      description: "string"
-      isType: (val) -> typeof val is 'string'
+      class _String extends Type
+        @description: "string"
+        @isType: (val) -> typeof val is 'string'
+        constructor: ->
+          if not (@ instanceof _String) then return new _String()
+          super()
+
     Array: _Array
     Object: _Object
     Function:
-      description: "function"
-      isType: (val) ->
-        typeof val is 'function'
+      class _Function extends Type
+        @description: "function"
+        @isType: (val) ->
+          typeof val is 'function'
+        constructor: ->
+          if not (@ instanceof _Function) then return new _Function()
+          super()
+
 
 if module? && module.exports?
   Bacon = require("baconjs")

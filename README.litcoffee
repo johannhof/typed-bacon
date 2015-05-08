@@ -40,6 +40,16 @@ Filters out all stream values that are not of the specified type.
 
 Coming soon!
 
+### Chaining types
+
+Types can be chained using the `or` method.
+
+    Bacon.fromArray([5, true, "test", null])
+         .typeFilter(Types.Number().or(Types.Null).or(Types.String))
+         .slidingWindow(3,3)
+         .onValue (arr) ->
+           assert.deepEqual(arr, [5, "test", null])
+
 ### Types.Object
 
 Types.Object can be passed a JS object containing child types with infinite deepness(as long as the call stack holds).

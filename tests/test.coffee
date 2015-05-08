@@ -52,3 +52,8 @@ describe 'Types', ->
       expect(Types.Object({test: Types.String}).isType({test: 1})).toBe(false)
       expect(Types.Object({test: Types.String}).isType({})).toBe(false)
 
+  describe 'or', ->
+    it 'chains', ->
+      expect(Types.Object().or(Types.Array).isType([])).toBe(true)
+      expect(Types.Object().or(Types.Number).isType([])).toBe(false)
+
