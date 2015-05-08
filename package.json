@@ -1,6 +1,6 @@
 {
   "name": "typed-bacon",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Type checks in your Bacon stream!",
   "main": "dist/typed-bacon.js",
   "scripts": {
