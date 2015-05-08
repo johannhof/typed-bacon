@@ -1,4 +1,4 @@
-# typed-bacon [![](https://travis-ci.org/johannhof/typed-bacon.svg)](https://travis-ci.org/johannhof/typed-bacon)
+# typed-bacon [![](https://travis-ci.org/johannhof/typed-bacon.svg)](https://travis-ci.org/johannhof/typed-bacon) [![](https://img.shields.io/npm/v/typed-bacon.svg)]()
 Type checks in your Bacon stream!
 
 > This document is an executable source file that contains tests to stay up to date.
