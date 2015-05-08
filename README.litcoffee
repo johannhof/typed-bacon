@@ -76,4 +76,5 @@ Types.Array can receive an object with a length parameter, specifying the exact 
          .typeCheck(Types.Array(length: 5))
          .onError (e) ->
            assert(e instanceof Error)
+           assert.equal(e.message, "Expected [1,2,3,4] to have a length of 5")
 

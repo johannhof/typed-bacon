@@ -108,9 +108,15 @@
       if (_Array.__super__.isType.call(this, val)) {
         return true;
       }
-      if (!_Array.isType(val) || ((this.options.length != null) && val.length !== this.options.length)) {
+      if (!_Array.isType(val)) {
         if (e != null) {
           e.error = new Error("Expected " + val + " to be an array");
+        }
+        return false;
+      }
+      if ((this.options.length != null) && val.length !== this.options.length) {
+        if (e != null) {
+          e.error = new Error("Expected [" + val + "] to have a length of " + this.options.length);
         }
         return false;
       }
