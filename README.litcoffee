@@ -24,7 +24,7 @@ Transforms a value to an error if the input is not of the specified type.
          .typeCheck(Types.Number)
          .onError (e) ->
            assert(e instanceof Error)
-           assert.equal(e.message, "Expected three to be of type number.")
+           assert.equal(e.message, "Expected three to be a number")
 
 ### Observable.typeFilter
 
@@ -66,6 +66,7 @@ Types.Object can be passed a JS object containing child types with infinite deep
          }))
          .onError (e) ->
            assert(e instanceof Error)
+           assert.equal(e.message, "Expected 5 to be an array")
 
 ### Types.Array
 

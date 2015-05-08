@@ -30,17 +30,17 @@
 
   })();
 
-  deepIsType = function(proto, comp) {
+  deepIsType = function(proto, comp, e) {
     var key, val;
     for (key in proto) {
       if (!hasProp.call(proto, key)) continue;
       val = proto[key];
       if (val.isType) {
-        if (!val.isType(comp[key])) {
+        if (!val.isType(comp[key], e)) {
           return false;
         }
       } else if (typeof val === "object") {
-        if (!deepIsType(val, comp[key])) {
+        if (!deepIsType(val, comp[key], e)) {
           return false;
         }
       } else {
@@ -53,20 +53,27 @@
   _Object = (function(superClass) {
     extend(_Object, superClass);
 
-    _Object.description = "object";
-
-    _Object.isType = function(val) {
-      return Object.prototype.toString.call(val) === "[object Object]";
+    _Object.isType = function(val, e) {
+      if (Object.prototype.toString.call(val) === "[object Object]") {
+        return true;
+      }
+      if (e != null) {
+        e.error = new Error("Expected " + val + " to be an object");
+      }
+      return false;
     };
 
-    _Object.prototype.isType = function(val) {
+    _Object.prototype.isType = function(val, e) {
       if (_Object.__super__.isType.call(this, val)) {
         return true;
       }
       if (!_Object.isType(val)) {
+        if (e != null) {
+          e.error = new Error("Expected " + val + " to be an object");
+        }
         return false;
       }
-      return deepIsType(this.proto, val);
+      return deepIsType(this.proto, val, e);
     };
 
     function _Object(proto) {
@@ -87,20 +94,24 @@
   _Array = (function(superClass) {
     extend(_Array, superClass);
 
-    _Array.description = "array";
-
-    _Array.isType = function(val) {
-      return Object.prototype.toString.call(val) === "[object Array]";
+    _Array.isType = function(val, e) {
+      if (Object.prototype.toString.call(val) === "[object Array]") {
+        return true;
+      }
+      if (e != null) {
+        e.error = new Error("Expected " + val + " to be an array");
+      }
+      return false;
     };
 
-    _Array.prototype.isType = function(val) {
+    _Array.prototype.isType = function(val, e) {
       if (_Array.__super__.isType.call(this, val)) {
         return true;
       }
-      if (!_Array.isType(val)) {
-        return false;
-      }
-      if ((this.options.length != null) && val.length !== this.options.length) {
+      if (!_Array.isType(val) || ((this.options.length != null) && val.length !== this.options.length)) {
+        if (e != null) {
+          e.error = new Error("Expected " + val + " to be an array");
+        }
         return false;
       }
       return true;
@@ -133,10 +144,12 @@
     Bacon.Observable.prototype.typeCheck = function(type) {
       var map, res;
       map = this.flatMap(function(val) {
-        if (type.isType(val)) {
+        var e;
+        e = {};
+        if (type.isType(val, e)) {
           return val;
         }
-        return new Bacon.Error(new Error("Expected " + val + " to be of type " + type.description + "."));
+        return new Bacon.Error(e.error);
       });
       return res = map.withDescription(this, "typeCheck", type);
     };
@@ -147,8 +160,14 @@
 
           Existy.description = "existy";
 
-          Existy.isType = function(val) {
-            return val != null;
+          Existy.isType = function(val, e) {
+            if (val != null) {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be existy");
+            }
+            return false;
           };
 
           function Existy() {
@@ -164,10 +183,14 @@
         Null: Null = (function(superClass) {
           extend(Null, superClass);
 
-          Null.description = "null";
-
-          Null.isType = function(val) {
-            return val === null;
+          Null.isType = function(val, e) {
+            if (val === null) {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be null.");
+            }
+            return false;
           };
 
           function Null() {
@@ -183,10 +206,14 @@
         Boolean: _Boolean = (function(superClass) {
           extend(_Boolean, superClass);
 
-          _Boolean.description = "boolean";
-
-          _Boolean.isType = function(val) {
-            return typeof val === 'boolean';
+          _Boolean.isType = function(val, e) {
+            if (typeof val === 'boolean') {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be a boolean");
+            }
+            return false;
           };
 
           function _Boolean() {
@@ -202,10 +229,14 @@
         Number: _Number = (function(superClass) {
           extend(_Number, superClass);
 
-          _Number.description = "number";
-
-          _Number.isType = function(val) {
-            return typeof val === 'number';
+          _Number.isType = function(val, e) {
+            if (typeof val === 'number') {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be a number");
+            }
+            return false;
           };
 
           function _Number() {
@@ -221,10 +252,14 @@
         String: _String = (function(superClass) {
           extend(_String, superClass);
 
-          _String.description = "string";
-
-          _String.isType = function(val) {
-            return typeof val === 'string';
+          _String.isType = function(val, e) {
+            if (typeof val === 'string') {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be a string");
+            }
+            return false;
           };
 
           function _String() {
@@ -242,10 +277,14 @@
         Function: _Function = (function(superClass) {
           extend(_Function, superClass);
 
-          _Function.description = "function";
-
-          _Function.isType = function(val) {
-            return typeof val === 'function';
+          _Function.isType = function(val, e) {
+            if (typeof val === 'function') {
+              return true;
+            }
+            if (e != null) {
+              e.error = new Error("Expected " + val + " to be a function");
+            }
+            return false;
           };
 
           function _Function() {

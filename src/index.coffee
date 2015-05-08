@@ -6,48 +6,60 @@ init = (Bacon) ->
 
   Bacon.Observable :: typeCheck = (type) ->
     map = @flatMap (val) ->
-      if type.isType(val)
+      e = {}
+      if type.isType(val, e)
         return val
-      return new Bacon.Error(new Error("Expected #{val} to be of type #{type.description}."))
+      return new Bacon.Error(e.error)
     res = map.withDescription(@, "typeCheck", type)
 
   Types:
     Existy:
       class Existy extends Type
         @description: "existy"
-        @isType: (val) -> val?
+        @isType: (val, e) ->
+          return true if val?
+          e?.error = new Error("Expected #{val} to be existy")
+          false
         constructor: ->
           if not (@ instanceof Existy) then return new Existy()
           super()
 
     Null:
       class Null extends Type
-        @description: "null"
-        @isType: (val) -> val is null
+        @isType: (val, e) ->
+          return true if val is null
+          e?.error = new Error("Expected #{val} to be null.")
+          false
         constructor: ->
           if not (@ instanceof Null) then return new Null()
           super()
 
     Boolean:
       class _Boolean extends Type
-        @description: "boolean"
-        @isType: (val) -> typeof val is 'boolean'
+        @isType: (val, e) ->
+          return true if typeof val is 'boolean'
+          e?.error = new Error("Expected #{val} to be a boolean")
+          false
         constructor: ->
           if not (@ instanceof _Boolean) then return new _Boolean()
           super()
 
     Number:
       class _Number extends Type
-        @description: "number"
-        @isType: (val) -> typeof val is 'number'
+        @isType: (val, e) ->
+          return true if typeof val is 'number'
+          e?.error = new Error("Expected #{val} to be a number")
+          false
         constructor: ->
           if not (@ instanceof _Number) then return new _Number()
           super()
 
     String:
       class _String extends Type
-        @description: "string"
-        @isType: (val) -> typeof val is 'string'
+        @isType: (val, e) ->
+          return true if typeof val is 'string'
+          e?.error = new Error("Expected #{val} to be a string")
+          false
         constructor: ->
           if not (@ instanceof _String) then return new _String()
           super()
@@ -56,9 +68,10 @@ init = (Bacon) ->
     Object: _Object
     Function:
       class _Function extends Type
-        @description: "function"
-        @isType: (val) ->
-          typeof val is 'function'
+        @isType: (val, e) ->
+          return true if typeof val is 'function'
+          e?.error = new Error("Expected #{val} to be a function")
+          false
         constructor: ->
           if not (@ instanceof _Function) then return new _Function()
           super()
