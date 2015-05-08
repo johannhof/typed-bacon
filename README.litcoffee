@@ -38,14 +38,21 @@ Filters out all stream values that are not of the specified type.
 
 ### Observable.typeWarn
 
-Coming soon!
+Will warn about type mismatches but will not interfere with the stream
+
+    # logs "Expected true to be a number"
+    Bacon.fromArray([5, true, "test", null])
+         .typeWarn(Types.Number().or(Types.Null).or(Types.String))
+         .slidingWindow(4,4)
+         .onValue (arr) ->
+           assert.deepEqual(arr, [5, true, "test", null])
 
 ### Chaining types
 
 Types can be chained using the `or` method.
 
     Bacon.fromArray([5, true, "test", null])
-         .typeFilter(Types.Number().or(Types.Null).or(Types.String))
+         .typeCheck(Types.Number().or(Types.Null).or(Types.String))
          .slidingWindow(3,3)
          .onValue (arr) ->
            assert.deepEqual(arr, [5, "test", null])

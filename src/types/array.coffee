@@ -6,10 +6,8 @@ class _Array extends Type
     false
 
   isType: (val, e) ->
-    return true if super(val)
-    if not _Array.isType(val)
-      e?.error = new Error("Expected #{val} to be an array")
-      return false
+    return true if super(val, e)
+    return false if not _Array.isType(val, e)
     if @options.length? and val.length isnt @options.length
       e?.error = new Error("Expected [#{val}] to have a length of #{@options.length}")
       return false
