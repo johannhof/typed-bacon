@@ -11,58 +11,6 @@ init = (Bacon) ->
       return new Bacon.Error(new Error("Expected #{val} to be of type #{type.description}."))
     res = map.withDescription(@, "typeCheck", type)
 
-  class Type
-    constructor: ->
-      @alternatives = []
-    or: (type) ->
-      @alternatives.push(type)
-      @
-    isType: (val) ->
-      for type in @alternatives
-        return true if type.isType(val)
-      false
-
-  class _Array extends Type
-    @description: "array"
-    @isType: (val) ->
-      Object.prototype.toString.call(val) is "[object Array]"
-
-    isType: (val) ->
-      return true if super(val)
-      return false if not _Array.isType(val)
-      return false if @options.length? and val.length isnt @options.length
-      true
-
-    constructor: (options={}) ->
-      if not (@ instanceof _Array) then return new _Array(options)
-      super()
-      @options = options
-
-  deepIsType = (proto, comp) ->
-    for own key, val of proto
-      if val.isType # TODO find a better way to find if Type object?
-        return false if not val.isType(comp[key])
-      else if typeof val is "object"
-        return false if not deepIsType(val, comp[key])
-      else
-        return false
-    true
-
-  class _Object extends Type
-    @description: "object"
-    @isType: (val) ->
-      Object.prototype.toString.call(val) is "[object Object]"
-
-    isType: (val) ->
-      return true if super(val)
-      return false if not _Object.isType(val)
-      deepIsType(@proto, val)
-
-    constructor: (proto={}) ->
-      if not (@ instanceof _Object) then return new _Object(proto)
-      super()
-      @proto = proto
-
   Types:
     Existy:
       class Existy extends Type

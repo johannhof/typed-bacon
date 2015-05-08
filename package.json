@@ -4,8 +4,8 @@
   "description": "Type checks in your Bacon stream!",
   "main": "dist/typed-bacon.js",
   "scripts": {
-    "build": "coffee -c -o dist/ typed-bacon.coffee",
-    "test": "NODE_PATH=./ coffee -l README.litcoffee && jest"
+    "build": "cat src/type.coffee src/object.coffee src/array.coffee src/index.coffee | coffee --compile --stdio > dist/typed-bacon.js",
+    "test": "npm run build && NODE_PATH=./dist coffee -l README.litcoffee && jest"
   },
   "repository": {
     "type": "git",
