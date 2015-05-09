@@ -1,7 +1,7 @@
 class Null extends Type
   @isType: (val, e) ->
     return true if val is null
-    e?.error = new Error("Expected #{val} to be null.")
+    e?.error = new Error("Expected #{val} to be null")
     false
   isType: (val, e) ->
     return true if super(val, e)

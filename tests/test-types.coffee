@@ -7,17 +7,24 @@ Bacon = require 'baconjs'
 describe 'Types', ->
   describe 'existy', ->
     it 'finds if an object is existy', ->
-      expect(Types.Existy.isType(null)).toBe(false)
-      expect(Types.Existy.isType(undefined)).toBe(false)
+      e = {}
+      expect(Types.Existy.isType(null, e)).toBe(false)
+      expect(e.error.message).toEqual("Expected null to be existy")
+      expect(Types.Existy.isType(undefined, e)).toBe(false)
+      expect(e.error.message).toEqual("Expected undefined to be existy")
       expect(Types.Existy.isType(0)).toBe(true)
       expect(Types.Existy.isType("")).toBe(true)
 
   describe 'null', ->
     it 'finds if an object is null', ->
+      e = {}
       expect(Types.Null.isType(null)).toBe(true)
-      expect(Types.Null.isType(undefined)).toBe(false)
-      expect(Types.Null.isType(0)).toBe(false)
-      expect(Types.Null.isType("")).toBe(false)
+      expect(Types.Null.isType(undefined, e)).toBe(false)
+      expect(e.error.message).toEqual("Expected undefined to be null")
+      expect(Types.Null.isType(0, e)).toBe(false)
+      expect(e.error.message).toEqual("Expected 0 to be null")
+      expect(Types.Null.isType("", e)).toBe(false)
+      expect(e.error.message).toEqual("Expected  to be null")
 
   describe 'boolean', ->
     it 'finds if an object is a boolean', ->

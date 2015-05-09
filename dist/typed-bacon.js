@@ -186,7 +186,7 @@
         return true;
       }
       if (e != null) {
-        e.error = new Error("Expected " + val + " to be null.");
+        e.error = new Error("Expected " + val + " to be null");
       }
       return false;
     };
