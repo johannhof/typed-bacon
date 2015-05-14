@@ -1,5 +1,9 @@
-# typed-bacon [![](https://travis-ci.org/johannhof/typed-bacon.svg)](https://travis-ci.org/johannhof/typed-bacon) [![](https://img.shields.io/npm/v/typed-bacon.svg)]()
+# typed-bacon [![](https://travis-ci.org/johannhof/typed-bacon.svg)](https://travis-ci.org/johannhof/typed-bacon) [![](https://img.shields.io/npm/v/typed-bacon.svg)](https://www.npmjs.com/package/typed-bacon)
 Type checks in your Bacon stream!
+
+```
+npm install typed-bacon
+```
 
 > This document is an executable source file that contains tests to stay up to date.
 
